@@ -1,7 +1,7 @@
 "use client";
 
 import { z } from "zod";
-const WEBSOCKET_URL = 'ws://localhost:6060'; 
+const WEBSOCKET_URL = 'wss://sol-trans-backend.onrender.com';
 interface FormData {
   get: (key: string) => FormDataEntryValue | null;
 }
@@ -20,6 +20,7 @@ interface UserReturn {
 export const createInvoiceWebSocket = (publicKey: string, solAmount: number): Promise<UserReturn> => {
   return new Promise((resolve, reject) => {
     const socket = new WebSocket(WEBSOCKET_URL);
+    
 
     // Handle WebSocket connection open
     socket.onopen = () => {
@@ -127,6 +128,6 @@ export async function createInvoice(
     } catch (error) {
         // Handle network or other errors
         console.log(`The error message: ${(error as Error).message}`);
-        return { errorMessage: `Failed to Login` };
+        return { errorMessage: `Failed to create` };
     }
 }

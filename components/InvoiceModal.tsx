@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import QRCode from 'react-qr-code';
-import { FiCopy } from 'react-icons/fi'; // Import the copy icon from react-icons
-import { useRouter } from 'next/navigation';
+import { FiCopy } from 'react-icons/fi';
 
 interface InvoiceModalProps {
   isOpen: boolean;

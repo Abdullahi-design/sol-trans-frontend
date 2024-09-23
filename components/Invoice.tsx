@@ -38,9 +38,10 @@ const Invoice = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#f5f7fa] px-4">
       <div className="bg-white shadow-lg rounded-lg p-8 max-w-md w-full">
+        <h2 className='block text-lg text-center pb-4 font-medium text-[#063a4f]'>Create an Invoice</h2>
         <form className="space-y-4" action={formAction}>
           <div>
-            <label className="block text-sm font-medium text-[#063a4f]">Sol Account Address</label>
+            <label className="block text-sm font-medium text-[#063a4f]">Set your Sol Receiving Address</label>
             <input
               name="publicKey"
               type="text"
@@ -49,7 +50,7 @@ const Invoice = () => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-[#063a4f]">Sol Amount</label>
+            <label className="block text-sm font-medium text-[#063a4f]">Amount to be paid (Sol)</label>
             <input
               name="solAmount"
               type="number"

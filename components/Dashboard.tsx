@@ -4,7 +4,7 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import SpinnerLoader from "./SpinnerLoader";
-import { LAMPORTS_PER_SOL } from "@solana/web3.js";
+import { LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
 
 interface DashboardProps {
   setActiveContent: (content: string) => void; // Function to update the active content
@@ -30,8 +30,17 @@ const Dashboard: React.FC<DashboardProps> = ({ setActiveContent }) => {
         console.log("Wallet Public Key:", publicKey.toBase58());
         console.log("Wallet Name:", wallet?.adapter?.name);
 
-        const info = await connection.getAccountInfo(publicKey);
-        setBalance(info!.lamports / LAMPORTS_PER_SOL);
+        // const info = await connection.getAccountInfo(publicKey);
+        // console.log("info:", info);
+        // setBalance(info!.lamports / LAMPORTS_PER_SOL);
+
+        const balance = await connection.getBalance(new PublicKey(publicKey));
+        const balanceConv = balance / LAMPORTS_PER_SOL;
+        setBalance(balanceConv);
+
+        console.log("balanceConv: ", balanceConv);
+        
+        
       } else {
         console.log("Wallet is not connected");
       }

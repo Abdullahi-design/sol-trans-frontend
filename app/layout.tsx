@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import AppWalletProvider from "@/components/AppWalletProvider";
 
 export const metadata: Metadata = {
-  title: "Albash test",
-  description: "Test App",
+  title: "solana-dapp",
+  description: "Solana wallet invoice maker",
 };
 
 export default function RootLayout({
@@ -14,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        {children}
+      <AppWalletProvider>{children}</AppWalletProvider>
       </body>
     </html>
   );

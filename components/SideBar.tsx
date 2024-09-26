@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { FaBitcoin, FaFileInvoice } from "react-icons/fa";
 import { FiArrowLeft, FiArrowRight } from "react-icons/fi";
+import { MdDashboard } from "react-icons/md";
 
 interface SidebarProps {
     setActiveContent: (content: string) => void; // Function to update the active content
@@ -29,8 +30,6 @@ const Sidebar: React.FC<SidebarProps> = ({ setActiveContent }) => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  let data = 'data';
-
   return (
     <div
       className={`h-screen bg-[#063a4f] text-white p-4 transition-all duration-300 z-30 absolute lg:relative top-0 left-0 ${
@@ -40,7 +39,7 @@ const Sidebar: React.FC<SidebarProps> = ({ setActiveContent }) => {
       {/* Toggle Button */}
       <div className={`flex justify-between items-center p-2 rounded-lg ${isExpanded && "bg-[#14bdc6]"} bg-opacity-60 mb-6`}>
         <p className={`text-lg font-bold ${!isExpanded && "hidden"}`}>
-          Albash Test
+          Solana Dapp
         </p>
         <button
           className="block"
@@ -54,6 +53,11 @@ const Sidebar: React.FC<SidebarProps> = ({ setActiveContent }) => {
 
       {/* Menu Items */}
         <ul className="flex-grow space-y-2">
+            <li>
+                <button onClick={() => setActiveContent("dashboard")} className={`block p-2 rounded-md hover:bg-[#14bdc6] hover:bg-opacity-40 transition duration-300 ${isExpanded ? 'w-full': 'w-fit'}`}>
+                    {isExpanded ? (<span className="transition-opacity flex"><MdDashboard  className="mt-1 mx-2 w-5 h-5"/>Dashboard</span>): <MdDashboard className="w-5 h-5"/>}
+                </button>
+            </li>
             <li>
                 <button onClick={() => setActiveContent("invoice")} className={`block p-2 rounded-md hover:bg-[#14bdc6] hover:bg-opacity-40 transition duration-300 ${isExpanded ? 'w-full': 'w-fit'}`}>
                     {isExpanded ? (<span className="transition-opacity flex"><FaFileInvoice  className="mt-1 mx-2 w-5 h-5"/>Create Invoice</span>): <FaFileInvoice className="w-5 h-5"/>}

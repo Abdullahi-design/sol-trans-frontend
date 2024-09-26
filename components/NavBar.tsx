@@ -1,4 +1,4 @@
-import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
+import AuthButton from './AuthButton';
 
 const Navbar = () => {
     return (
@@ -6,7 +6,7 @@ const Navbar = () => {
             <a href="/">
             </a>
 
-            <WalletMultiButton style={{ backgroundColor: "#ea580c" }} className='!bg-orange-600 hover:!bg-black transition-all duration-200 !rounded-lg' />
+            <AuthButton />
         </nav>
     );
 };

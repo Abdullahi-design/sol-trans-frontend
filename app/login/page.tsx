@@ -3,7 +3,6 @@
 import AuthButton from "@/components/AuthButton";
 import SpinnerLoader from "@/components/SpinnerLoader";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { WalletMultiButton } from "@solana/wallet-adapter-react-ui"
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";

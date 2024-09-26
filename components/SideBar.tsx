@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { FaBitcoin, FaFileInvoice } from "react-icons/fa";
+import { useEffect, useState } from "react";
+import { FaFileInvoice } from "react-icons/fa";
 import { FiArrowLeft, FiArrowRight } from "react-icons/fi";
-import { MdDashboard } from "react-icons/md";
+import { GrTransaction } from "react-icons/gr";
+import { MdDashboard, MdPendingActions } from "react-icons/md";
 
 interface SidebarProps {
     setActiveContent: (content: string) => void; // Function to update the active content
@@ -64,8 +65,13 @@ const Sidebar: React.FC<SidebarProps> = ({ setActiveContent }) => {
                 </button>
             </li>
             <li>
-                <button onClick={() => setActiveContent("singlePayment")} className={`block p-2 rounded-md hover:bg-[#14bdc6] hover:bg-opacity-40 transition duration-300 ${isExpanded ? 'w-full': 'w-fit'}`}>
-                    {isExpanded ? (<span className="transition-opacity flex"><FaBitcoin  className="mt-1 mx-2 w-5 h-5"/>SIngle Payment</span>): <FaBitcoin className="w-5 h-5"/>}
+                <button onClick={() => setActiveContent("transactions")} className={`block p-2 rounded-md hover:bg-[#14bdc6] hover:bg-opacity-40 transition duration-300 ${isExpanded ? 'w-full': 'w-fit'}`}>
+                    {isExpanded ? (<span className="transition-opacity flex"><GrTransaction  className="mt-1 mx-2 w-5 h-5"/>Recent Transactions</span>): <GrTransaction className="w-5 h-5"/>}
+                </button>
+            </li>
+            <li>
+                <button onClick={() => setActiveContent("pending-transactions")} className={`block p-2 rounded-md hover:bg-[#14bdc6] hover:bg-opacity-40 transition duration-300 ${isExpanded ? 'w-full': 'w-fit'}`}>
+                    {isExpanded ? (<span className="transition-opacity flex"><MdPendingActions  className="mt-1 mx-2 w-5 h-5"/>Pending Transactions</span>): <MdPendingActions className="w-5 h-5"/>}
                 </button>
             </li>
         </ul>

@@ -3,8 +3,9 @@
 import Dashboard from "@/components/Dashboard";
 import Invoice from "@/components/Invoice";
 import Navbar from "@/components/NavBar";
+import PendingTransactions from "@/components/PendingTransactions";
 import Sidebar from "@/components/SideBar";
-import SinglePayment from "@/components/SinglePayment";
+import Transactions from "@/components/Transactions";
 import { useState } from "react";
 
 
@@ -15,13 +16,15 @@ export default function Home() {
   const renderContent = () => {
     switch (activeContent) {
       case "dashboard":
-        return <Dashboard/>
+        return <Dashboard setActiveContent={setActiveContent}/>
       case "invoice":
         return <Invoice />;
-      case "singlePayment":
-        return <SinglePayment />;
+      case "pending-transactions":
+        return <PendingTransactions />
+      case "transactions":
+        return <Transactions />;
       default:
-        return <Dashboard />;
+        return <Dashboard setActiveContent={setActiveContent} />;
     }
   };
 

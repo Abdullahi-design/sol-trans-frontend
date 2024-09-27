@@ -3,7 +3,7 @@
 import AuthButton from "@/components/AuthButton";
 import SpinnerLoader from "@/components/SpinnerLoader";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { LAMPORTS_PER_SOL } from "@solana/web3.js";
+import { LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -31,7 +31,9 @@ const page = () => {
                 console.log("Wallet Name:", wallet?.adapter?.name);
 
                 const info = await connection.getAccountInfo(publicKey);
-                setBalance(info!.lamports / LAMPORTS_PER_SOL);
+                const balance = await connection.getBalance(new PublicKey(publicKey));
+                const balanceConv = balance / LAMPORTS_PER_SOL;
+                setBalance(balanceConv);
             } else {
                 console.log("Wallet is not connected");
             }

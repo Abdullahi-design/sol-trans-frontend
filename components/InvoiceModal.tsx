@@ -1,38 +1,43 @@
 import React, { useEffect, useState } from 'react';
 import QRCode from 'react-qr-code';
 import { FiCopy } from 'react-icons/fi';
+import { usePaymentContext } from './PaymentContext';
 
 interface InvoiceModalProps {
   isOpen: boolean;
   onClose: () => void;
-  tempAcc: string| any;
-  solAmount: number | any;
+//   tempAcc: string| any;
+//   solAmount: number | any;
 //   onTransactionSuccess: (signature: string) => void;
 //   signature?: string;
 }
 
-const InvoiceModal: React.FC<InvoiceModalProps> = ({ isOpen, onClose, tempAcc, solAmount }) => {
-  const [timeLeft, setTimeLeft] = useState(30 * 60); // 30 minutes in seconds
+const InvoiceModal: React.FC<InvoiceModalProps> = ({ isOpen, onClose }) => {
+//   const [timeLeft, setTimeLeft] = useState(30 * 60); // 30 minutes in seconds
+  const { timeLeft, tempAcc, solAmount } = usePaymentContext(); // Access the context
   const [copied, setCopied] = useState(false); // State to handle copy success
   const [signature, setSignature] = useState('');
 
     useEffect(() => {
         if (isOpen) {
             const interval = setInterval(() => {
-                setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
+                if (timeLeft === 0) {
+                  clearInterval(interval);
+                  onClose(); // Close the modal when timer expires
+                }
             }, 1000);
 
-            // Clear interval when time runs out
-            if (timeLeft === 0) {
-                clearInterval(interval);
-                onClose(); // Close the modal when timer expires
-            }
-
-        
             const storedSignature = localStorage.getItem('signature');
             if (storedSignature) {
                 console.log("Signature from localStorage:", storedSignature);
                 setSignature(storedSignature)
+            }
+
+            // Verify that the localstorage is set
+            const savedExpiryTimeUTC = localStorage.getItem('expiryTime');
+            if(savedExpiryTimeUTC){
+                const nowUTC = new Date().toISOString();
+                console.log({savedExpiryTimeUTC, nowUTC});
             }
             
 
@@ -60,7 +65,7 @@ const InvoiceModal: React.FC<InvoiceModalProps> = ({ isOpen, onClose, tempAcc, s
         onClose();
     }
 
-    console.log(signature, 'signature');
+    // console.log(signature, 'signature');
   
 
     // Truncate the tempAcc to show first and last few characters

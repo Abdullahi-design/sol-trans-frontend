@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import AppWalletProvider from "@/components/AppWalletProvider";
+import { PaymentProvider } from "@/components/PaymentContext";
 
 export const metadata: Metadata = {
   title: "solana-dapp",
@@ -15,8 +16,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-      <AppWalletProvider>{children}</AppWalletProvider>
+      <AppWalletProvider>
+        <PaymentProvider>
+          {children}
+        </PaymentProvider>
+      </AppWalletProvider>
       </body>
     </html>
   );
 }
+// const { timeLeft, tempAcc } = usePaymentContext();

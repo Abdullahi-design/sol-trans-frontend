@@ -1,7 +1,7 @@
 "use client";
 
 import { z } from "zod";
-const WEBSOCKET_URL = 'wss://sol-trans-backend.onrender.com';
+const WEBSOCKET_URL = process.env.NEXT_PUBLIC_WSS_URL as string;
 interface FormData {
   get: (key: string) => FormDataEntryValue | null;
 }
@@ -15,13 +15,13 @@ interface UserReturn {
     errorMessage?: string;
     successMessage?: string;
     signature?: string;
+    expiryTime?: string;
 }
 
 export const createInvoiceWebSocket = (publicKey: string, solAmount: number): Promise<UserReturn> => {
   return new Promise((resolve, reject) => {
     const socket = new WebSocket(WEBSOCKET_URL);
     
-
     // Handle WebSocket connection open
     socket.onopen = () => {
       const payload = { publicKey, solAmount };
@@ -34,6 +34,21 @@ export const createInvoiceWebSocket = (publicKey: string, solAmount: number): Pr
       const responseData = JSON.parse(event.data);
       console.log("Received WebSocket data:", responseData);
 
+      if (typeof window !== 'undefined') {
+        // Validate expiryTime from the response
+        const expiryTime = responseData.expiryTime ? new Date(responseData.expiryTime) : null;
+      
+        if (expiryTime && !isNaN(expiryTime.getTime())) {
+            // If valid, set it in localStorage
+            const expiryTimeUTC = expiryTime.toISOString(); // Always in UTC
+            localStorage.setItem('expiryTime', expiryTimeUTC);
+            console.log('Expiry time saved in localStorage:', expiryTimeUTC);
+        } else {
+          // Handle invalid expiry time
+          console.error('Invalid expiryTime received:', responseData.expiryTime);
+        }
+      }
+      
         if (responseData.errorMessage) {
             reject({ errorMessage: responseData.errorMessage });
         } else {
@@ -52,12 +67,12 @@ export const createInvoiceWebSocket = (publicKey: string, solAmount: number): Pr
                 console.log('Transaction Signature:', responseData.signature);
 
                 if (typeof window !== 'undefined') {
-                    // Set the local storage
-                    localStorage.setItem('signature', responseData.signature);
-                
-                    // Verify that the cookie is set
-                    const savedSignature = localStorage.getItem('signature');
-                    console.log('Signature stored in localStorage:', savedSignature);
+                  // Set the local storage
+                  localStorage.setItem('signature', responseData.signature);
+              
+                  // Verify that the cookie is set
+                  const savedSignature = localStorage.getItem('signature');
+                  console.log('Signature stored in localStorage:', savedSignature);
                 }
                 
 

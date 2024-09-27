@@ -38,7 +38,7 @@ const Dashboard: React.FC<DashboardProps> = ({ setActiveContent }) => {
         const balanceConv = balance / LAMPORTS_PER_SOL;
         setBalance(balanceConv);
 
-        console.log("balanceConv: ", balanceConv);
+        // console.log("balanceConv: ", balanceConv);
         
         
       } else {

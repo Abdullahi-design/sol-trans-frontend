@@ -8,14 +8,19 @@ interface FormData {
 
 interface PrevState {}
 
+interface Transaction {
+  signature: string;
+}
+
 interface UserReturn {
-    token?: null;
-    tempAcc?: null;
-    solAmount?: null; 
-    errorMessage?: string;
-    successMessage?: string;
-    signature?: string;
-    expiryTime?: string;
+  token?: null;
+  tempAcc?: null;
+  solAmount?: null; 
+  errorMessage?: string;
+  successMessage?: string;
+  signature?: string;
+  expiryTime?: string;
+  transactions?: Transaction[]; // Add a transactions array to hold the transaction data
 }
 
 export const createInvoiceWebSocket = (publicKey: string, solAmount: number): Promise<UserReturn> => {
@@ -24,7 +29,7 @@ export const createInvoiceWebSocket = (publicKey: string, solAmount: number): Pr
     
     // Handle WebSocket connection open
     socket.onopen = () => {
-      const payload = { publicKey, solAmount };
+      const payload = { action: 'transferRequest', publicKey, solAmount };
       console.log('Sending payload:', payload);
       socket.send(JSON.stringify(payload));
     };
@@ -98,7 +103,6 @@ export const createInvoiceWebSocket = (publicKey: string, solAmount: number): Pr
   });
 };
 
-
 // cerate user invoice
 export async function createInvoice(
   prevState: PrevState,
@@ -146,3 +150,40 @@ export async function createInvoice(
         return { errorMessage: `Failed to create` };
     }
 }
+
+export const recentTransactionsWebSocket = (publicKey: string): Promise<UserReturn> => {
+  return new Promise((resolve, reject) => {
+    const socket = new WebSocket(WEBSOCKET_URL);
+    
+    socket.onopen = () => {
+      const payload = { action: 'recentTransactions', publicKey };
+      console.log('Sending payload:', payload);
+      socket.send(JSON.stringify(payload));
+    };
+
+    socket.onmessage = (event) => {
+      const response = JSON.parse(event.data);
+      console.log('Received response:', response);
+
+      if (response.errorMessage) {
+        console.error('Error:', response.errorMessage);
+        reject({ errorMessage: response.errorMessage });
+      } else {
+        // Assuming 'transactions' is part of the response
+        resolve({
+          successMessage: 'Recent transactions retrieved successfully',
+          transactions: response.transactions, // Ensure this matches the response structure
+        });
+      }
+    };
+
+    socket.onerror = (error) => {
+      console.error("WebSocket Error: ", error);
+      reject({ errorMessage: "WebSocket connection error" });
+    };
+
+    socket.onclose = () => {
+      console.log("WebSocket connection closed");
+    };
+  });
+};

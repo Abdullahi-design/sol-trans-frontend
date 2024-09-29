@@ -1,3 +1,5 @@
+"use client";
+
 import { recentTransactionsWebSocket } from '@/utils/action';
 import { useWallet } from '@solana/wallet-adapter-react';
 import React, { useEffect, useState } from 'react';
@@ -18,25 +20,34 @@ const Transactions = () => {
   const { publicKey } = useWallet();
   const [transactions, setTransactions] = useState<CustomTransaction[]>([]); // Define state with the correct type
   const [copiedText, setCopiedText] = useState<string | null>(null);
+  const [mountPublicKey, setMountPublicKey] = useState<any>(null);
 
   useEffect(() => {
-    if (publicKey) {
-      const fetchTransactions = async () => {
+    // Only set mountPublicKey if publicKey is available
+    if (publicKey && publicKey.toBase58() !== mountPublicKey?.toBase58()) {
+      setMountPublicKey(publicKey);
+    }
+
+    const fetchTransactions = async () => {
+      if (mountPublicKey) {
         try {
-          const response = await recentTransactionsWebSocket(publicKey.toBase58());
+          const response = await recentTransactionsWebSocket(mountPublicKey.toBase58());
           
           // Set the transactions in the state
           if (response.transactions) {
-            setTransactions(response.transactions as CustomTransaction[]); // Cast the response to the correct type
+            setTransactions(response.transactions as CustomTransaction[]);
           }
         } catch (error) {
           console.error('Error fetching recent transactions:', error);
         }
-      };
+      }
+    };
 
+    // Only call fetchTransactions if mountPublicKey is valid
+    if (mountPublicKey) {
       fetchTransactions();
     }
-  }, [publicKey]);
+  }, [publicKey, mountPublicKey]); // Trigger whenever mountPublicKey changes
 
   const copyToClipboard = async (text: string) => {
     try {

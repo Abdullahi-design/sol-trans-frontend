@@ -29,7 +29,7 @@ const InvoiceModal: React.FC<InvoiceModalProps> = ({ isOpen, onClose }) => {
 
             const storedSignature = localStorage.getItem('signature');
             if (storedSignature) {
-                console.log("Signature from localStorage:", storedSignature);
+                // console.log("Signature from localStorage:", storedSignature);
                 setSignature(storedSignature)
             }
 
@@ -37,7 +37,7 @@ const InvoiceModal: React.FC<InvoiceModalProps> = ({ isOpen, onClose }) => {
             const savedExpiryTimeUTC = localStorage.getItem('expiryTime');
             if(savedExpiryTimeUTC){
                 const nowUTC = new Date().toISOString();
-                console.log({savedExpiryTimeUTC, nowUTC});
+                // console.log({savedExpiryTimeUTC, nowUTC});
             }
             
 
@@ -70,7 +70,7 @@ const InvoiceModal: React.FC<InvoiceModalProps> = ({ isOpen, onClose }) => {
 
     // Truncate the tempAcc to show first and last few characters
     const truncateAddress = (address: string) => {
-        console.log(address, 'address', solAmount);
+        // console.log(address, 'address', solAmount);
         
         return `${address.slice(0, 6)}...${address.slice(-6)}`;
     };
@@ -109,12 +109,21 @@ const InvoiceModal: React.FC<InvoiceModalProps> = ({ isOpen, onClose }) => {
                 {/* Countdown Timer */}
                 <p className="text-sm text-red-500 mb-2">This request will expire in: {formatTime(timeLeft)}</p>
 
-                <button
-                className="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700"
-                onClick={onClose}
-                >
-                Cancel Payment
-                </button>
+                <div className='flex justify-around'>
+                    <button
+                        className="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700"
+                        onClick={onClose}
+                    >
+                        Cancel Payment
+                    </button>
+
+                    <button
+                        className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
+                        onClick={onClose}
+                    >
+                        Close Modal
+                    </button>
+                </div>
             </div>
             ) : (
             <div className="text-center">

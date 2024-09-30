@@ -60,13 +60,13 @@ const Transactions = () => {
   };
 
   return (
-    <div className="min-h-full bg-[#f5f7fa] flex flex-col items-center justify-center p-4">
+    <div className="h-fit bg-[#f5f7fa] mt-20 flex flex-col items-center justify-center p-4">
       {/* <h1 className="text-2xl font-bold mb-6">Recent Transactions</h1> */}
       
       {transactions.length === 0 ? (
         <p className="text-gray-600">No transactions found</p>
       ) : (
-        <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full max-w-5xl">
+        <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full max-w-5xl h-[80vh] overflow-y-scroll">
           {transactions.map((transaction, index) => (
             <li key={index} className="bg-white shadow-lg rounded-lg p-6 border-t-4 border-teal-500">
               <div className="flex items-center justify-center w-full mb-2">
